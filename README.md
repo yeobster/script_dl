@@ -1,90 +1,85 @@
 ## **YouTube Script Downloader**
 
-### **Description**
-This Chrome extension automates the process of opening the "Script" section of a YouTube video, extracting its content, and downloading it as a `.txt` file. The extension is designed to simplify the process of obtaining video transcripts for further use.
+### **설명**
+이 크롬 확장 프로그램은 YouTube 영상의 "스크립트" 섹션을 자동으로 열고 내용을 추출하여 `.txt` 파일로 다운로드할 수 있게 해줍니다. 번거로운 스크립트 복사를 자동화하여 쉽고 빠르게 사용할 수 있도록 설계되었습니다.
 
 ---
 
-### **Features**
-- Opens the YouTube "Script" section automatically.
-- Extracts the full transcript or script from the video.
-- Downloads the script content as a `.txt` file directly to your computer.
+### **주요 기능**
+- YouTube 영상 페이지에서 "스크립트 표시" 버튼을 자동으로 클릭.
+- 스크립트 섹션의 내용을 추출.
+- 추출된 스크립트를 `.txt` 파일로 다운로드.
+- 알림(Notification)을 통해 작업 상태와 결과를 사용자에게 전달.
 
 ---
 
-### **Installation**
-1. Download or clone this repository to your local machine.
-2. Open Chrome and navigate to `chrome://extensions/`.
-3. Enable **Developer mode** in the top-right corner.
-4. Click **Load unpacked** and select the folder containing this project.
+### **설치 방법**
+1. 이 프로젝트를 로컬 디렉토리에 다운로드하거나 클론합니다.
+2. 크롬 브라우저에서 `chrome://extensions/`로 이동합니다.
+3. 오른쪽 상단에서 **개발자 모드**를 활성화합니다.
+4. **압축 해제된 확장 프로그램 로드**를 클릭하고 이 프로젝트 폴더를 선택합니다.
 
 ---
 
-### **How to Use**
-1. Open a YouTube video in your browser.
-2. Click the extension icon in the Chrome toolbar.
-3. The extension will:
-   - Automatically open the "Script" section of the video.
-   - Extract the script content.
-   - Download the extracted script as a `.txt` file.
+### **사용 방법**
+1. YouTube 영상 페이지를 엽니다.
+2. 크롬 툴바에서 확장 프로그램 아이콘을 클릭합니다.
+3. 확장 프로그램이 자동으로 다음을 수행합니다:
+   - 스크립트 버튼을 찾아 클릭.
+   - 스크립트 내용을 추출.
+   - 스크립트 다운로드.
+   - 상태와 결과를 알림(Notification)으로 표시.
 
 ---
 
-### **File Structure**
+### **파일 구조**
 ```
 /script_dl
-├── background.js       # Handles extension activation and messaging
-├── content.js          # Handles DOM manipulation and data extraction
-├── manifest.json       # Defines the extension configuration and permissions
+├── background.js       # 확장 프로그램의 백그라운드 스크립트
+├── content.js          # YouTube 페이지의 DOM 작업을 처리하는 스크립트
+├── manifest.json       # 확장 프로그램의 설정 및 권한 정의
 └── icons/
-    ├── icon16.png      # 16x16 icon for the extension
-    ├── icon48.png      # 48x48 icon for the extension
-    └── icon128.png     # 128x128 icon for the extension
+    ├── icon16.png      # 확장 프로그램 아이콘 (16x16)
+    ├── icon48.png      # 확장 프로그램 아이콘 (48x48)
+    └── icon128.png     # 확장 프로그램 아이콘 (128x128)
 ```
 
 ---
 
-### **Permissions**
-This extension requires the following permissions, as specified in `manifest.json`:
-- **activeTab**: To access the content of the current tab.
-- **scripting**: To execute scripts in the context of the current page.
+### **권한**
+이 확장 프로그램은 다음과 같은 권한을 필요로 합니다:
+1. **activeTab**:
+   - 현재 활성 탭의 콘텐츠에 접근하여 DOM 조작을 수행.
+2. **downloads**:
+   - 스크립트 데이터를 `.txt` 파일로 다운로드.
+3. **notifications**:
+   - 사용자에게 작업 상태와 결과를 알림으로 전달.
 
 ---
 
-### **How It Works**
+### **작동 원리**
 1. **`background.js`**:
-   - Listens for the user's click on the extension icon.
-   - Sends a message to `content.js` to initiate the script extraction process.
+   - 사용자가 확장 프로그램 아이콘을 클릭하면 `content.js`에 메시지를 보냄.
+   - `content.js`에서 작업을 처리한 결과를 수신.
+   - 다운로드 작업을 수행하거나 알림(Notification)을 통해 사용자에게 상태 전달.
 
 2. **`content.js`**:
-   - Locates the "Script" button on the YouTube video page and clicks it.
-   - Waits for the "Script" section to render.
-   - Extracts the script data from the DOM.
-   - Sends the script data back to the `background.js` for file generation.
+   - YouTube 페이지에서 "스크립트 표시" 버튼을 찾고 클릭.
+   - 스크립트 섹션이 렌더링될 때까지 기다림.
+   - 스크립트 내용을 추출하여 `background.js`로 전달.
 
 3. **`manifest.json`**:
-   - Configures the extension's metadata, permissions, and scripts.
-
-4. **Icons**:
-   - Provides visual assets for the extension.
+   - 확장 프로그램의 메타데이터, 권한, 스크립트를 정의.
 
 ---
 
-### **Known Issues**
-- This extension relies on YouTube's DOM structure, which may change over time. If the extension stops working, ensure that the selectors in `content.js` match YouTube's current structure.
-- For long scripts, the rendering time may cause delays.
+### **알려진 문제**
+- YouTube의 DOM 구조가 변경되면 확장 프로그램이 동작하지 않을 수 있습니다. 이 경우, `content.js`에서 DOM 셀렉터를 업데이트해야 합니다.
+- 스크립트가 긴 경우 렌더링에 시간이 걸릴 수 있습니다. 타임아웃 설정을 조정하세요.
 
 ---
 
-### **Contributions**
-Contributions are welcome! Feel free to fork the repository and submit a pull request.
+### **라이선스**
+이 프로젝트는 MIT 라이선스에 따라 제공됩니다.
 
 ---
-
-### **License**
-This project is licensed under the MIT License.
-
----
-
-### **Contact**
-For any issues or suggestions, please contact the project maintainer.
